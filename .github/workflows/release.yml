@@ -1,18 +1,19 @@
 name: Release
 
-# Publishing a GitHub release tagged e.g. "v0.1.0" builds module.zip and attaches
-# it together with module.json. Foundry/The Forge install from:
+# Pushing a tag like "v0.1.0" runs the tests, builds module.zip and publishes a
+# GitHub release with module.zip and module.json attached.
+# Foundry / The Forge install from:
 # https://github.com/V-Cancrosa/Weather_Forging/releases/latest/download/module.json
 
 on:
-  release:
-    types: [published]
+  push:
+    tags: ["v*"]
 
 permissions:
   contents: write
 
 jobs:
-  build:
+  release:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -22,7 +23,7 @@ jobs:
 
       - name: Stamp version and download URL
         env:
-          TAG: ${{ github.event.release.tag_name }}
+          TAG: ${{ github.ref_name }}
           REPO: ${{ github.repository }}
         run: |
           VERSION="${TAG#v}"
@@ -32,10 +33,12 @@ jobs:
           mv module.tmp.json module.json
 
       - name: Build zip
-        run: zip -r module.zip module.json README.md scripts styles templates lang
+        run: zip -r module.zip module.json LICENSE README.md scripts styles templates lang
 
-      - name: Upload release assets
+      - name: Publish release
         env:
           GH_TOKEN: ${{ github.token }}
-          TAG: ${{ github.event.release.tag_name }}
-        run: gh release upload "$TAG" module.json module.zip --clobber
+          TAG: ${{ github.ref_name }}
+        run: |
+          gh release create "$TAG" module.json module.zip \
+            --title "Weather Forging $TAG" --generate-notes --verify-tag

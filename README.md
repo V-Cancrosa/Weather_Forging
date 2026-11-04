@@ -38,5 +38,10 @@ Hooks.on("weather-forging.changed", (scene, target, transition) => { /* … */ }
 npm test   # testy modelu pogody (Node 20+)
 ```
 
-Wydanie: utwórz release na GitHubie z tagiem `vX.Y.Z`. Workflow sam zbuduje
-`module.zip` i dołączy `module.json`.
+Wydanie: ustaw wersję w `module.json`, a potem wypchnij tag `vX.Y.Z`
+(`git tag v0.2.0 && git push origin v0.2.0`). Workflow sam przetestuje
+moduł, zbuduje `module.zip` i opublikuje release.
+
+## Licencja
+
+[MIT](LICENSE)
