@@ -1,13 +1,16 @@
 name: Release
 
-# Pushing a tag like "v0.1.0" runs the tests, builds module.zip and publishes a
-# GitHub release with module.zip and module.json attached.
+# Every push to main checks the version in module.json. If no release exists
+# for it yet, the tests run, module.zip is built and release "v<version>" is
+# published (the tag is created by GitHub) with module.zip and module.json.
+# To release: bump "version" in module.json and push to main.
 # Foundry / The Forge install from:
 # https://github.com/V-Cancrosa/Weather_Forging/releases/latest/download/module.json
 
 on:
   push:
-    tags: ["v*"]
+    branches: [main]
+  workflow_dispatch:
 
 permissions:
   contents: write
@@ -18,27 +21,43 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Check whether this version is already released
+        id: version
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          VERSION=$(jq -r .version module.json)
+          echo "tag=v$VERSION" >> "$GITHUB_OUTPUT"
+          if gh release view "v$VERSION" >/dev/null 2>&1; then
+            echo "Release v$VERSION already exists, nothing to do."
+            echo "release=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "release=true" >> "$GITHUB_OUTPUT"
+          fi
+
       - name: Run tests
+        if: steps.version.outputs.release == 'true'
         run: npm test
 
-      - name: Stamp version and download URL
+      - name: Stamp download URL
+        if: steps.version.outputs.release == 'true'
         env:
-          TAG: ${{ github.ref_name }}
+          TAG: ${{ steps.version.outputs.tag }}
           REPO: ${{ github.repository }}
         run: |
-          VERSION="${TAG#v}"
-          jq --arg v "$VERSION" \
-             --arg d "https://github.com/$REPO/releases/download/$TAG/module.zip" \
-             '.version = $v | .download = $d' module.json > module.tmp.json
+          jq --arg d "https://github.com/$REPO/releases/download/$TAG/module.zip" \
+             '.download = $d' module.json > module.tmp.json
           mv module.tmp.json module.json
 
       - name: Build zip
+        if: steps.version.outputs.release == 'true'
         run: zip -r module.zip module.json LICENSE README.md scripts styles templates lang
 
       - name: Publish release
+        if: steps.version.outputs.release == 'true'
         env:
           GH_TOKEN: ${{ github.token }}
-          TAG: ${{ github.ref_name }}
+          TAG: ${{ steps.version.outputs.tag }}
         run: |
           gh release create "$TAG" module.json module.zip \
-            --title "Weather Forging $TAG" --generate-notes --verify-tag
+            --target "$GITHUB_SHA" --title "Weather Forging $TAG" --generate-notes
