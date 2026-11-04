@@ -1,0 +1,17 @@
+<section class="wf-panel">
+  <p class="wf-scene">
+    {{localize "WEATHERFORGING.Panel.Scene"}}: <strong>{{sceneName}}</strong>
+  </p>
+  <div class="wf-presets">
+    {{#each presets}}
+    <button type="button" class="wf-preset {{#if active}}active{{/if}}" data-action="applyPreset" data-preset="{{id}}">
+      <i class="{{icon}}" inert></i>
+      <span>{{label}}</span>
+    </button>
+    {{/each}}
+  </div>
+  <label class="wf-duration">
+    <span>{{localize "WEATHERFORGING.Panel.Duration"}}</span>
+    <input type="number" name="duration" min="0" max="600" step="1" value="{{duration}}">
+  </label>
+</section>

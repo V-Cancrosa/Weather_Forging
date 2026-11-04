@@ -1,0 +1,23 @@
+{
+  "id": "weather-forging",
+  "title": "Weather Forging",
+  "description": "Cinematic, system-agnostic weather for Foundry VTT: canvas effects, weather-reactive interface and a weather state other systems and modules can read.",
+  "version": "0.1.0",
+  "compatibility": {
+    "minimum": "14",
+    "verified": "14"
+  },
+  "authors": [
+    { "name": "V-Cancrosa" }
+  ],
+  "esmodules": ["scripts/module.mjs"],
+  "styles": ["styles/weather-forging.css"],
+  "languages": [
+    { "lang": "en", "name": "English", "path": "lang/en.json" },
+    { "lang": "pl", "name": "Polski", "path": "lang/pl.json" }
+  ],
+  "url": "https://github.com/V-Cancrosa/Weather_Forging",
+  "bugs": "https://github.com/V-Cancrosa/Weather_Forging/issues",
+  "manifest": "https://github.com/V-Cancrosa/Weather_Forging/releases/latest/download/module.json",
+  "download": "https://github.com/V-Cancrosa/Weather_Forging/releases/latest/download/module.zip"
+}

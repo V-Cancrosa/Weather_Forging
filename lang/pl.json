@@ -1,0 +1,47 @@
+{
+  "WEATHERFORGING": {
+    "Controls": {
+      "Panel": "Weather Forging"
+    },
+    "Panel": {
+      "Title": "Weather Forging",
+      "Scene": "Scena",
+      "Duration": "Czas przejścia (sekundy)"
+    },
+    "Presets": {
+      "clear": "Bezchmurnie",
+      "overcast": "Pochmurno",
+      "drizzle": "Mżawka",
+      "rain": "Deszcz",
+      "storm": "Burza",
+      "sleet": "Deszcz ze śniegiem",
+      "snow": "Śnieg",
+      "blizzard": "Zamieć",
+      "frost": "Szron",
+      "fog": "Mgła",
+      "ashfall": "Opad popiołu"
+    },
+    "Settings": {
+      "ReplaceCore": {
+        "Name": "Zastąp wbudowaną pogodę",
+        "Hint": "Wyłącza wbudowane efekty pogody Foundry, żeby całą pogodę renderował Weather Forging. Sceny z ustawioną wbudowaną pogodą są przejmowane automatycznie."
+      },
+      "Quality": {
+        "Name": "Jakość efektów",
+        "Hint": "Ile cząsteczek i efektów renderuje Twój komputer. Dotyczy tylko Ciebie.",
+        "Low": "Niska",
+        "Medium": "Średnia",
+        "High": "Wysoka",
+        "Ultra": "Ultra"
+      },
+      "UIEffects": {
+        "Name": "Interfejs reagujący na pogodę",
+        "Hint": "Zabarwia interfejs i dodaje szron, wilgoć i efekty burzy zależnie od pogody. Dotyczy tylko Ciebie."
+      },
+      "ReduceMotion": {
+        "Name": "Ogranicz błyski i ruch",
+        "Hint": "Mocno przygasza błyski piorunów. Zalecane dla osób wrażliwych na migotanie."
+      }
+    }
+  }
+}

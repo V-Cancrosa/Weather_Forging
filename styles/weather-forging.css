@@ -1,0 +1,84 @@
+/* ===== Weather Forging ===== */
+
+:root {
+  --wf-frost: 0;
+  --wf-wet: 0;
+  --wf-gloom: 0;
+  --wf-fog: 0;
+  --wf-ash: 0;
+  --wf-flash: 0;
+}
+
+/* ---- Weather-reactive interface overlay (stage 1 prototype) ----
+   One fixed, click-through layer above the whole UI. ::before grades the
+   colours of everything beneath it, ::after paints frost at the screen edges. */
+#weather-forging-ui-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 10000;
+}
+.weather-forging-active #weather-forging-ui-overlay { display: block; }
+
+#weather-forging-ui-overlay::before,
+#weather-forging-ui-overlay::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+}
+
+/* Colour grade: cold blue-white for frost, steel blue for rain, dark for storms,
+   sepia-grey for ash, white burst for lightning. */
+#weather-forging-ui-overlay::before {
+  mix-blend-mode: soft-light;
+  background:
+    linear-gradient(rgb(255 255 255 / calc(var(--wf-flash) * 1)), rgb(255 255 255 / calc(var(--wf-flash) * 1))),
+    linear-gradient(rgb(200 225 255 / calc(var(--wf-frost) * 0.55)), rgb(200 225 255 / calc(var(--wf-frost) * 0.55))),
+    linear-gradient(rgb(60 90 130 / calc(var(--wf-wet) * 0.25)), rgb(60 90 130 / calc(var(--wf-wet) * 0.25))),
+    linear-gradient(rgb(10 15 30 / calc(var(--wf-gloom) * 0.22)), rgb(10 15 30 / calc(var(--wf-gloom) * 0.22))),
+    linear-gradient(rgb(140 120 95 / calc(var(--wf-ash) * 0.4)), rgb(140 120 95 / calc(var(--wf-ash) * 0.4)));
+}
+
+/* Frost creeping in from the screen edges, plus a light fog wash. */
+#weather-forging-ui-overlay::after {
+  background:
+    radial-gradient(ellipse at center,
+      transparent calc(78% - var(--wf-frost) * 28%),
+      rgb(230 242 255 / calc(var(--wf-frost) * 0.5)) 100%),
+    linear-gradient(rgb(215 220 228 / calc(var(--wf-fog) * 0.12)), rgb(215 220 228 / calc(var(--wf-fog) * 0.12)));
+}
+
+/* ---- GM panel ---- */
+.weather-forging .wf-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+.weather-forging .wf-scene { margin: 0; }
+.weather-forging .wf-presets {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.4rem;
+}
+.weather-forging .wf-preset {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.3rem;
+  height: auto;
+  padding: 0.6rem 0.25rem;
+  line-height: 1.1;
+}
+.weather-forging .wf-preset i { font-size: 1.4rem; margin: 0; }
+.weather-forging .wf-preset.active {
+  outline: 2px solid var(--color-warm-2, #ff6400);
+  outline-offset: -2px;
+}
+.weather-forging .wf-duration {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+.weather-forging .wf-duration input { width: 6rem; }

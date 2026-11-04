@@ -1,0 +1,47 @@
+{
+  "WEATHERFORGING": {
+    "Controls": {
+      "Panel": "Weather Forging"
+    },
+    "Panel": {
+      "Title": "Weather Forging",
+      "Scene": "Scene",
+      "Duration": "Transition time (seconds)"
+    },
+    "Presets": {
+      "clear": "Clear",
+      "overcast": "Overcast",
+      "drizzle": "Drizzle",
+      "rain": "Rain",
+      "storm": "Thunderstorm",
+      "sleet": "Sleet",
+      "snow": "Snow",
+      "blizzard": "Blizzard",
+      "frost": "Frost",
+      "fog": "Fog",
+      "ashfall": "Ashfall"
+    },
+    "Settings": {
+      "ReplaceCore": {
+        "Name": "Replace core weather",
+        "Hint": "Disable Foundry's built-in weather effects so Weather Forging renders all weather. Scenes with core weather set are adopted automatically."
+      },
+      "Quality": {
+        "Name": "Effect quality",
+        "Hint": "How many particles and effects your computer renders. Affects only you.",
+        "Low": "Low",
+        "Medium": "Medium",
+        "High": "High",
+        "Ultra": "Ultra"
+      },
+      "UIEffects": {
+        "Name": "Weather-reactive interface",
+        "Hint": "Tint the interface and add frost, wet and storm effects according to the weather. Affects only you."
+      },
+      "ReduceMotion": {
+        "Name": "Reduce flashes and motion",
+        "Hint": "Greatly dims lightning flashes. Recommended for photosensitive players."
+      }
+    }
+  }
+}

@@ -26,8 +26,7 @@ co już istnieje.
 
 | Parametr | Zakres / przykład |
 |---|---|
-| `precipitation.type` | `none`, `rain`, `snow`, `sleet`, `hail`, `ash`, … |
-| `precipitation.intensity` | 0–1 |
+| `precipitation.{rain,snow,hail,ash}` | 0–1 każdy. **Mieszanka** zamiast jednego typu, dzięki czemu przejścia płynnie się przenikają, a deszcz ze śniegiem to po prostu `rain` + `snow` |
 | `wind.speed`, `wind.direction`, `wind.gusts` | km/h, stopnie, 0–1 |
 | `temperature` | °C |
 | `cloudCover` | 0–1 |
@@ -84,8 +83,9 @@ gdzie jest jego postać, co dodatkowo buduje immersję. Szczegóły dopracujemy 
 - **Dostępność**: tryb „ogranicz ruch i błyski” (fotowrażliwość).
 - **Synchronizacja**: MG jest autorytetem; stan we flagach sceny/regionu;
   przejścia synchronizowane czasowo przez socket.
-- **Zgodność**: współpraca z wbudowanymi efektami pogody Foundry i z FXMaster
-  (do ustalenia: zastępujemy czy współistniejemy).
+- **Zgodność**: **decyzja: zastępujemy wbudowaną pogodę Foundry** (ustawienie
+  świata, domyślnie włączone). Sceny z ustawioną wbudowaną pogodą są
+  automatycznie przejmowane jako nasze presety. Zgodność z FXMaster do sprawdzenia.
 - **Assety**: proceduralne (shadery, szum) lub na własnych/wolnych licencjach.
 - **Wydawanie**: `module.json` + GitHub Releases (zip + manifest „latest”),
   instalacja przez URL manifestu na The Forge; później ewentualnie Bazaar.
@@ -102,10 +102,16 @@ gdzie jest jego postać, co dodatkowo buduje immersję. Szczegóły dopracujemy 
    w punkcie lub przy tokenie, tryb „system jest źródłem prawdy”.
 6. **Dodatki**: dźwięk, generator klimatyczny, integracja z kalendarzem.
 
+### Stan realizacji
+
+- **Etap 1 (v0.1.0)**: szkielet gotowy. Model stanu, kontroler (flaga sceny
+  + zegar serwera, bez socketów), panel MG, zastąpienie wbudowanej pogody,
+  prototyp cząsteczek, mgły i błyskawic, prototyp barwienia UI, workflow wydań.
+
 ## 6. Otwarte pytania
 
-- Szczegóły API Foundry v14 (canvas, Regiony, ApplicationV2) do weryfikacji
-  na starcie implementacji.
+- Szczegóły API Foundry v14 (canvas, Regiony, ApplicationV2): zweryfikowane
+  na definicjach typów v14. Do potwierdzenia w działającej instancji.
 - Model pogody w systemie Fallout Equestria i kierunek przepływu danych
   (czyta / zapisuje / oba).
 - Relacja z FXMaster i wbudowanymi efektami pogody.
