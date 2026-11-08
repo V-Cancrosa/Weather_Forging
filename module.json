@@ -2,7 +2,7 @@
   "id": "weather-forging",
   "title": "Weather Forging",
   "description": "Cinematic, system-agnostic weather for Foundry VTT: canvas effects, weather-reactive interface and a weather state other systems and modules can read.",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "compatibility": {
     "minimum": "14",
     "verified": "14"

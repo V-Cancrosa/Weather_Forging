@@ -14,6 +14,10 @@ const PARTICLE_TYPES = {
   ash: { texture: "ash", max: 700, fall: [0.3, 0.8], scale: [0.2, 0.6], alpha: [0.35, 0.75], sway: 0.9, align: false, windFactor: 1 }
 };
 
+/** Rain splashes on the ground: expanding rings. */
+const SPLASH_MAX = 260;
+const SPLASH_LIFETIME = 0.35;
+
 const rand = ([min, max]) => min + Math.random() * (max - min);
 const wrap = (v, min, size) => min + ((((v - min) % size) + size) % size);
 
@@ -27,12 +31,20 @@ export class WeatherRenderer {
   container = null;
   #textures = {};
   #layers = {};
+  #splashes = null;
   #fog = null;
   #gloom = null;
   #flash = null;
   #flashLevel = 0;
   #pendingFlash = 0;
   #time = 0;
+
+  /**
+   * Foundry's weather occlusion filter: hides weather under roofs and inside
+   * "Suppress Weather" regions. Shared with the ground renderer.
+   * @type {PIXI.Filter|null}
+   */
+  occlusionFilter = null;
 
   attach() {
     this.detach();
@@ -52,9 +64,22 @@ export class WeatherRenderer {
       this.#layers[type] = layer;
       this.container.addChild(layer);
     }
+    this.#splashes = new PIXI.Container();
+    this.#splashes.particles = Array.from({ length: SPLASH_MAX }, () => {
+      const s = new PIXI.Sprite(this.#textures.ring);
+      s.anchor.set(0.5);
+      s.life = Math.random();
+      s.visible = false;
+      this.#splashes.addChild(s);
+      return s;
+    });
+    this.container.addChildAt(this.#splashes, 1);
     this.#fog = this.#createVeil(0xc9ced6);
     this.#flash = this.#createVeil(0xf2f6ff);
     this.#flash.blendMode = PIXI.BLEND_MODES.ADD;
+
+    this.occlusionFilter = this.#createOcclusionFilter(host);
+    if (this.occlusionFilter) this.container.filters = [this.occlusionFilter];
 
     host.addChild(this.container);
     canvas.app.ticker.add(this.#tick, this);
@@ -65,8 +90,25 @@ export class WeatherRenderer {
     if (this.container && !this.container.destroyed) this.container.destroy({ children: true });
     for (const tex of Object.values(this.#textures)) tex.destroy(true);
     this.container = null;
+    this.occlusionFilter = null;
     this.#textures = {};
     this.#layers = {};
+  }
+
+  /** Configure core's occlusion filter for our use; null if unavailable. */
+  #createOcclusionFilter(host) {
+    if (!getSetting("indoorMasking")) return null;
+    const filter = host.occlusionFilter;
+    const depth = canvas.masks?.depth?.renderTexture;
+    const WeatherEffects = foundry.canvas?.layers?.WeatherEffects;
+    if (!filter || !depth || !WeatherEffects) return null;
+    try {
+      WeatherEffects.configureOcclusionMask(filter, { enabled: true, texture: depth, channelWeights: [0, 0, 1, 0] });
+      return filter;
+    } catch (err) {
+      console.warn(`${MODULE_ID} | Weather occlusion unavailable; weather will also show indoors.`, err);
+      return null;
+    }
   }
 
   #createTextures() {
@@ -85,6 +127,10 @@ export class WeatherRenderer {
       g.beginFill(0xffffff, 0.25).drawCircle(6, 6, 6).endFill();
       g.beginFill(0xffffff, 0.5).drawCircle(6, 6, 4).endFill();
       g.beginFill(0xffffff, 1).drawCircle(6, 6, 2.2).endFill();
+    });
+    this.#textures.ring = make(g => {
+      g.lineStyle(1.5, 0xe6eef8, 0.9).drawCircle(10, 10, 8);
+      g.lineStyle(1, 0xe6eef8, 0.4).drawCircle(10, 10, 4.5);
     });
     this.#textures.ash = make(g => {
       g.beginFill(0x8a8580, 0.6).drawCircle(5, 5, 5).endFill();
@@ -113,6 +159,23 @@ export class WeatherRenderer {
     s.visible = false;
     layer.addChild(s);
     return s;
+  }
+
+  #updateSplashes(intensity, view, grid, dt) {
+    const active = Math.round(SPLASH_MAX * intensity);
+    this.#splashes.particles.forEach((s, i) => {
+      s.visible = i < active;
+      if (!s.visible) return;
+      s.life += dt / SPLASH_LIFETIME;
+      if (s.life >= 1) {
+        s.life %= 1;
+        s.x = view.x + Math.random() * view.w;
+        s.y = view.y + Math.random() * view.h;
+        s.maxScale = (grid * (0.05 + Math.random() * 0.07)) / 20;
+      }
+      s.scale.set((s.maxScale ?? (grid * 0.08) / 20) * (0.2 + 0.8 * s.life));
+      s.alpha = (1 - s.life) * 0.4;
+    });
   }
 
   /** The visible area of the canvas in world coordinates, with padding. */
@@ -162,6 +225,8 @@ export class WeatherRenderer {
         if (cfg.align) p.rotation = Math.atan2(vy, vx) - Math.PI / 2;
       });
     }
+
+    this.#updateSplashes(state.precipitation.rain * quality, view, grid, dt);
 
     for (const veil of [this.#gloom, this.#fog, this.#flash]) {
       veil.position.set(view.x, view.y);

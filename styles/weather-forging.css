@@ -34,7 +34,7 @@
   mix-blend-mode: soft-light;
   background:
     linear-gradient(rgb(255 255 255 / calc(var(--wf-flash) * 1)), rgb(255 255 255 / calc(var(--wf-flash) * 1))),
-    linear-gradient(rgb(200 225 255 / calc(var(--wf-frost) * 0.55)), rgb(200 225 255 / calc(var(--wf-frost) * 0.55))),
+    linear-gradient(rgb(200 225 255 / calc(var(--wf-frost) * 0.4)), rgb(200 225 255 / calc(var(--wf-frost) * 0.4))),
     linear-gradient(rgb(60 90 130 / calc(var(--wf-wet) * 0.25)), rgb(60 90 130 / calc(var(--wf-wet) * 0.25))),
     linear-gradient(rgb(10 15 30 / calc(var(--wf-gloom) * 0.22)), rgb(10 15 30 / calc(var(--wf-gloom) * 0.22))),
     linear-gradient(rgb(140 120 95 / calc(var(--wf-ash) * 0.4)), rgb(140 120 95 / calc(var(--wf-ash) * 0.4)));
@@ -45,7 +45,7 @@
   background:
     radial-gradient(ellipse at center,
       transparent calc(78% - var(--wf-frost) * 28%),
-      rgb(230 242 255 / calc(var(--wf-frost) * 0.5)) 100%),
+      rgb(230 242 255 / calc(var(--wf-frost) * 0.4)) 100%),
     linear-gradient(rgb(215 220 228 / calc(var(--wf-fog) * 0.12)), rgb(215 220 228 / calc(var(--wf-fog) * 0.12)));
 }
 

@@ -41,6 +41,10 @@
       "ReduceMotion": {
         "Name": "Ogranicz błyski i ruch",
         "Hint": "Mocno przygasza błyski piorunów. Zalecane dla osób wrażliwych na migotanie."
+      },
+      "IndoorMasking": {
+        "Name": "Ukryj pogodę we wnętrzach",
+        "Hint": "Używa maskowania pogody Foundry, żeby opady i pokrywa terenu nie pojawiały się pod dachami ani w regionach z zachowaniem „Suppress Weather”."
       }
     }
   }

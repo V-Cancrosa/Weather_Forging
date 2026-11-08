@@ -107,6 +107,13 @@ gdzie jest jego postać, co dodatkowo buduje immersję. Szczegóły dopracujemy 
 - **Etap 1 (v0.1.0)**: szkielet gotowy. Model stanu, kontroler (flaga sceny
   + zegar serwera, bez socketów), panel MG, zastąpienie wbudowanej pogody,
   prototyp cząsteczek, mgły i błyskawic, prototyp barwienia UI, workflow wydań.
+- **Etap 2, część 1 (v0.2.0)**: opady i pokrywa terenu ukryte pod dachami i w regionach
+  „Suppress Weather” (filtr okluzji Foundry, można wyłączyć w ustawieniach);
+  narastający śnieg na mapie (shader na kopii tła/tekstur poziomów: plamy,
+  zaspy przy krawędziach, szron, migotanie); mokra nawierzchnia z kałużami
+  i kręgami od kropli; rozbryzgi deszczu.
+  Ograniczenie: śnieg pokrywa tło sceny i tekstury poziomów, a nie kafelki
+  (tiles). Mapy zbudowane z kafelków dostaną to w kolejnej iteracji.
 
 ## 6. Otwarte pytania
 

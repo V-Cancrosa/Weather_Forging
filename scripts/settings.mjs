@@ -14,6 +14,16 @@ export function registerSettings() {
     requiresReload: true
   });
 
+  game.settings.register(MODULE_ID, "indoorMasking", {
+    name: "WEATHERFORGING.Settings.IndoorMasking.Name",
+    hint: "WEATHERFORGING.Settings.IndoorMasking.Hint",
+    scope: "world",
+    config: true,
+    type: Boolean,
+    default: true,
+    requiresReload: true
+  });
+
   game.settings.register(MODULE_ID, "quality", {
     name: "WEATHERFORGING.Settings.Quality.Name",
     hint: "WEATHERFORGING.Settings.Quality.Hint",

@@ -41,6 +41,10 @@
       "ReduceMotion": {
         "Name": "Reduce flashes and motion",
         "Hint": "Greatly dims lightning flashes. Recommended for photosensitive players."
+      },
+      "IndoorMasking": {
+        "Name": "Hide weather indoors",
+        "Hint": "Use Foundry's weather occlusion so precipitation and ground cover do not appear under roofs or inside regions with the Suppress Weather behavior."
       }
     }
   }
