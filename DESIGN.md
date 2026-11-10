@@ -112,8 +112,10 @@ gdzie jest jego postać, co dodatkowo buduje immersję. Szczegóły dopracujemy 
   narastający śnieg na mapie (shader na kopii tła/tekstur poziomów: plamy,
   zaspy przy krawędziach, szron, migotanie); mokra nawierzchnia z kałużami
   i kręgami od kropli; rozbryzgi deszczu.
-  Ograniczenie: śnieg pokrywa tło sceny i tekstury poziomów, a nie kafelki
-  (tiles). Mapy zbudowane z kafelków dostaną to w kolejnej iteracji.
+- **Etap 2, część 2 (v0.3.0)**: pokrywa śniegu i wilgoci także na kafelkach
+  (ośnieżone dachy znikają razem z zanikającym dachem); strefy bez pogody
+  z Regionów z zachowaniem „Suppress Weather”: własna maska rastrowa
+  (niezależna od filtru okluzji Foundry), używana przez cząsteczki i shader ziemi.
 
 ## 6. Otwarte pytania
 

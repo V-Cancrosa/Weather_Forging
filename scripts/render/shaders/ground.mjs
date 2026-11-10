@@ -40,6 +40,9 @@ uniform float uTime;
 uniform float uGrid;
 uniform vec2 uEdgeStep;
 uniform float uAlpha;
+uniform sampler2D uMask;
+uniform vec4 uMaskRect;
+uniform float uHasMask;
 
 float hash(vec2 p) {
   p = fract(p * vec2(123.34, 456.21));
@@ -137,16 +140,20 @@ void main() {
     if (hasBase) snowCol *= 0.68 + 0.42 * lum;   // map structure shows through the snow
   }
 
+  // No-weather zones (Suppress Weather regions): fade back to the untouched map.
+  float m = 0.0;
+  if (uHasMask > 0.5) m = texture2D(uMask, (vScene - uMaskRect.xy) / uMaskRect.zw).r;
+
   if (hasBase) {
     vec3 cold = mix(vec3(luma(wetCol)), wetCol, 1.0 - 0.45 * uSnow) * vec3(0.93, 0.97, 1.04);
     vec3 outCol = mix(cold, snowCol, snowA);
-    gl_FragColor = vec4(outCol * a, a) * uAlpha;
+    gl_FragColor = mix(vec4(outCol * a, a), tex, m) * uAlpha;
   } else {
     vec4 wetL = vec4(mix(vec3(0.05, 0.06, 0.08), sky, puddle), 0.18 * uWet + 0.25 * puddle);
     float sa = snowA * 0.9;
     float oa = sa + wetL.a * (1.0 - sa);
     vec3 orgb = snowCol * sa + wetL.rgb * wetL.a * (1.0 - sa);
-    gl_FragColor = vec4(orgb, oa) * uAlpha;
+    gl_FragColor = vec4(orgb, oa) * (1.0 - m) * uAlpha;
   }
 }
 `;

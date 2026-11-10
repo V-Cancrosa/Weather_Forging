@@ -27,6 +27,11 @@ const wrap = (v, min, size) => min + ((((v - min) % size) + size) % size);
  * driven by WeatherController.getCurrent() every frame.
  */
 export class WeatherRenderer {
+  /** @param {import("./weather-mask.mjs").WeatherMask} mask  No-weather zones. */
+  constructor(mask) {
+    this.mask = mask;
+  }
+
   /** @type {PIXI.Container|null} */
   container = null;
   #textures = {};
@@ -171,6 +176,7 @@ export class WeatherRenderer {
         s.life %= 1;
         s.x = view.x + Math.random() * view.w;
         s.y = view.y + Math.random() * view.h;
+        s.renderable = !this.mask.isSuppressed(s.x, s.y);
         s.maxScale = (grid * (0.05 + Math.random() * 0.07)) / 20;
       }
       s.scale.set((s.maxScale ?? (grid * 0.08) / 20) * (0.2 + 0.8 * s.life));
@@ -192,6 +198,7 @@ export class WeatherRenderer {
     const dt = Math.min(canvas.app.ticker.deltaMS, 100) / 1000;
     this.#time += dt;
 
+    this.mask.update();
     const state = WeatherController.getCurrent(canvas.scene);
     const quality = QUALITY_FACTORS[getSetting("quality")] ?? 0.8;
     const reduceMotion = getSetting("reduceMotion");
@@ -221,6 +228,7 @@ export class WeatherRenderer {
         const vy = (p.fall + windY * cfg.windFactor * 0.5) * grid;
         p.x = wrap(p.x + vx * dt, view.x, view.w);
         p.y = wrap(p.y + vy * dt, view.y, view.h);
+        p.renderable = !this.mask.isSuppressed(p.x, p.y);
         p.alpha = p.baseAlpha;
         if (cfg.align) p.rotation = Math.atan2(vy, vx) - Math.PI / 2;
       });

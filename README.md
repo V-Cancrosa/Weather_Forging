@@ -20,6 +20,10 @@ https://github.com/V-Cancrosa/Weather_Forging/releases/latest/download/module.js
 
 - MG: **Sterowanie sceną → Oświetlenie → ikona chmury** otwiera panel pogody.
   Wybierz pogodę i czas przejścia.
+- **Miejsce bez pogody** (wnętrze, jaskinia, zadaszenie): narysuj Region,
+  dodaj mu zachowanie **Suppress Weather** („Wyłącz pogodę”). W tym obszarze
+  znikną opady, śnieg i wilgoć na ziemi. Wyłączenie zachowania przywraca pogodę.
+- Śnieg i wilgoć pokrywają tło sceny, poziomy i kafelki (także dachy).
 - Ustawienia klienta: jakość efektów, interfejs reagujący na pogodę,
   ograniczenie błysków.
 
