@@ -4,7 +4,7 @@
   </p>
   <div class="wf-presets">
     {{#each presets}}
-    <button type="button" class="wf-preset {{#if active}}active{{/if}}" data-action="applyPreset" data-preset="{{id}}">
+    <button type="button" class="wf-preset {{#if active}}active{{/if}} {{#if custom}}custom{{/if}}" data-action="applyPreset" data-preset="{{id}}">
       <i class="{{icon}}" inert></i>
       <span>{{label}}</span>
     </button>
@@ -14,4 +14,7 @@
     <span>{{localize "WEATHERFORGING.Panel.Duration"}}</span>
     <input type="number" name="duration" min="0" max="600" step="1" value="{{duration}}">
   </label>
+  <button type="button" class="wf-open-editor" data-action="openEditor">
+    <i class="fa-solid fa-sliders" inert></i> {{localize "WEATHERFORGING.Panel.Custom"}}
+  </button>
 </section>

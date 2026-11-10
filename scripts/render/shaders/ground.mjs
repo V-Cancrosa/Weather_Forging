@@ -112,7 +112,7 @@ void main() {
   float snowA = 0.0;
   vec3 snowCol = vec3(0.92, 0.95, 1.0);
   if (uSnow > 0.001) {
-    float n = fbm(p * 0.7);
+    float n = fbm(p * 0.7 + vec2(11.3, 47.9));
     float detail = fbm(p * 4.3 + 7.0);
     float grain = noise(vScene * 0.2);
 

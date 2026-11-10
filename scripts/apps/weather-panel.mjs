@@ -1,5 +1,6 @@
 import { DEFAULT_TRANSITION, MODULE_ID } from "../constants.mjs";
-import { PRESETS } from "../state/presets.mjs";
+import { getAllPresets } from "../state/preset-store.mjs";
+import { PresetEditor } from "./preset-editor.mjs";
 import { WeatherController } from "../state/weather-controller.mjs";
 
 const { ApplicationV2, HandlebarsApplicationMixin } = foundry.applications.api;
@@ -15,7 +16,8 @@ export class WeatherPanel extends HandlebarsApplicationMixin(ApplicationV2) {
     },
     position: { width: 380, height: "auto" },
     actions: {
-      applyPreset: WeatherPanel.#onApplyPreset
+      applyPreset: WeatherPanel.#onApplyPreset,
+      openEditor: () => PresetEditor.open()
     }
   };
 
@@ -43,10 +45,11 @@ export class WeatherPanel extends HandlebarsApplicationMixin(ApplicationV2) {
     return Object.assign(context, {
       sceneName: canvas?.scene?.name ?? "—",
       duration: this.duration,
-      presets: Object.entries(PRESETS).map(([id, preset]) => ({
+      presets: Object.entries(getAllPresets()).map(([id, preset]) => ({
         id,
         icon: preset.icon,
-        label: game.i18n.localize(`WEATHERFORGING.Presets.${id}`),
+        label: preset.label,
+        custom: !preset.builtin,
         active: id === active
       }))
     });

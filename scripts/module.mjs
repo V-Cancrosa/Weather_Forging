@@ -4,18 +4,31 @@ import { patchCoreWeather } from "./render/core-override.mjs";
 import { WeatherRenderer } from "./render/weather-renderer.mjs";
 import { GroundRenderer } from "./render/ground-renderer.mjs";
 import { WeatherMask } from "./render/weather-mask.mjs";
+import { SceneLighting } from "./render/scene-lighting.mjs";
 import { UITheme } from "./ui/ui-theme.mjs";
 import { WeatherPanel } from "./apps/weather-panel.mjs";
+import { PresetEditor } from "./apps/preset-editor.mjs";
+import { WelcomeWindow } from "./apps/welcome.mjs";
+import { WeatherWidget } from "./ui/weather-widget.mjs";
 import { WeatherController } from "./state/weather-controller.mjs";
-import { PRESETS } from "./state/presets.mjs";
+import { getAllPresets } from "./state/preset-store.mjs";
 
 const mask = new WeatherMask();
-const renderer = new WeatherRenderer(mask);
+const lighting = new SceneLighting();
+const renderer = new WeatherRenderer(mask, lighting);
 const ground = new GroundRenderer(mask);
 const uiTheme = new UITheme(renderer);
+const widget = new WeatherWidget(() => WeatherPanel.open());
 
 Hooks.once("init", () => {
   registerSettings();
+  game.settings.registerMenu(MODULE_ID, "welcome", {
+    name: "WEATHERFORGING.Welcome.Title",
+    label: "WEATHERFORGING.Welcome.MenuLabel",
+    icon: "fa-solid fa-cloud-sun-rain",
+    type: WelcomeWindow,
+    restricted: false
+  });
   patchCoreWeather();
 
   // Early, unstable API — will be formalized in a later stage.
@@ -23,12 +36,47 @@ Hooks.once("init", () => {
     getWeather: scene => WeatherController.getCurrent(scene),
     getTarget: scene => WeatherController.getTarget(scene),
     setWeather: (scene, target, options) => WeatherController.setWeather(scene, target, options),
-    presets: PRESETS,
-    openPanel: () => WeatherPanel.open()
+    get presets() { return getAllPresets(); },
+    openPanel: () => WeatherPanel.open(),
+    openEditor: () => PresetEditor.open(),
+    openWelcome: () => new WelcomeWindow().render({ force: true }),
+    diagnose
   };
 });
 
-Hooks.once("ready", () => uiTheme.start());
+Hooks.once("ready", () => {
+  uiTheme.start();
+  widget.start();
+  WelcomeWindow.showIfNew();
+});
+
+// Refresh the panel when custom presets change (on every GM client).
+Hooks.on("updateSetting", setting => {
+  if (setting.key === `${MODULE_ID}.customPresets`) WeatherPanel.refresh();
+});
+Hooks.on("createSetting", setting => {
+  if (setting.key === `${MODULE_ID}.customPresets`) WeatherPanel.refresh();
+});
+
+/** Print what Weather Forging sees on this client — handy when reporting problems. */
+function diagnose() {
+  const report = {
+    foundry: game.version,
+    module: game.modules.get(MODULE_ID).version,
+    scene: canvas?.scene?.name ?? null,
+    preset: WeatherController.getPresetId(canvas?.scene),
+    weatherLayer: !!canvas?.weather,
+    particlesAttached: !!renderer.container,
+    indoorMasking: !!renderer.occlusionFilter,
+    groundCover: ground.stats,
+    noWeatherRegions: canvas?.scene?.regions.filter(r => WeatherMask.suppresses(r)).length ?? 0,
+    darknessLinked: game.settings.get(MODULE_ID, "affectDarkness"),
+    darknessLevel: canvas?.environment?.darknessLevel,
+    state: WeatherController.getCurrent(canvas?.scene)
+  };
+  console.log(`${MODULE_ID} | Diagnostics`, report);
+  return report;
+}
 
 Hooks.on("canvasReady", () => {
   mask.invalidate();

@@ -1,0 +1,43 @@
+<section class="wf-editor">
+  <label class="wf-row">
+    <span>{{localize "WEATHERFORGING.Editor.Load"}}</span>
+    <select name="load">
+      <option value="">{{localize "WEATHERFORGING.Editor.CurrentWeather"}}</option>
+      {{#each presets}}
+      <option value="{{id}}" {{#if selected}}selected{{/if}}>{{label}}</option>
+      {{/each}}
+    </select>
+  </label>
+
+  {{#each groups}}
+  <fieldset class="wf-group">
+    <legend>{{localize label}}</legend>
+    {{#each fields}}
+    <div class="wf-field">
+      <span class="wf-label">{{localize label}}</span>
+      <input type="range" name="{{key}}" min="{{min}}" max="{{max}}" step="{{step}}" value="{{value}}">
+      <output>{{display}}</output>
+    </div>
+    {{/each}}
+  </fieldset>
+  {{/each}}
+
+  <label class="wf-row">
+    <span>{{localize "WEATHERFORGING.Panel.Duration"}}</span>
+    <input type="number" name="duration" min="0" max="600" step="1" value="{{duration}}">
+  </label>
+  <button type="button" class="wf-apply" data-action="apply">
+    <i class="fa-solid fa-cloud-arrow-down" inert></i> {{localize "WEATHERFORGING.Editor.Apply"}}
+  </button>
+
+  <fieldset class="wf-group">
+    <legend>{{localize "WEATHERFORGING.Editor.SaveAs"}}</legend>
+    <div class="wf-row">
+      <input type="text" name="name" value="{{name}}" placeholder="{{localize 'WEATHERFORGING.Editor.NamePlaceholder'}}">
+      <button type="button" data-action="save"><i class="fa-solid fa-floppy-disk" inert></i> {{localize "WEATHERFORGING.Editor.Save"}}</button>
+      {{#if canDelete}}
+      <button type="button" data-action="delete" data-tooltip="WEATHERFORGING.Editor.Delete"><i class="fa-solid fa-trash" inert></i></button>
+      {{/if}}
+    </div>
+  </fieldset>
+</section>

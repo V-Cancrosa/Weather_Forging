@@ -1,0 +1,38 @@
+<section class="wf-welcome">
+  <header class="wf-hero">
+    <div class="wf-hero-icons" aria-hidden="true">
+      <i class="fa-solid fa-sun"></i><i class="fa-solid fa-cloud-rain"></i><i class="fa-solid fa-snowflake"></i><i class="fa-solid fa-cloud-bolt"></i>
+    </div>
+    <h2>Weather Forging <span class="wf-version">v{{version}}</span></h2>
+    <p>{{localize "WEATHERFORGING.Welcome.Tagline"}}</p>
+  </header>
+
+  <h3><i class="fa-solid fa-rocket" inert></i> {{localize "WEATHERFORGING.Welcome.QuickStart"}}</h3>
+  <ol class="wf-steps">
+    <li>{{{localize "WEATHERFORGING.Welcome.Step1"}}}</li>
+    <li>{{{localize "WEATHERFORGING.Welcome.Step2"}}}</li>
+    <li>{{{localize "WEATHERFORGING.Welcome.Step3"}}}</li>
+    <li>{{{localize "WEATHERFORGING.Welcome.Step4"}}}</li>
+  </ol>
+
+  <h3><i class="fa-solid fa-star" inert></i> {{localize "WEATHERFORGING.Welcome.WhatsNew"}}</h3>
+  {{#each releases}}
+  <div class="wf-release {{#if latest}}latest{{/if}}">
+    <strong>v{{version}}</strong>
+    <ul>{{#each items}}<li>{{this}}</li>{{/each}}</ul>
+  </div>
+  {{/each}}
+
+  <p class="wf-links">
+    <a href="https://github.com/V-Cancrosa/Weather_Forging" target="_blank" rel="noopener"><i class="fa-brands fa-github" inert></i> GitHub</a>
+    <a href="https://github.com/V-Cancrosa/Weather_Forging/issues" target="_blank" rel="noopener"><i class="fa-solid fa-bug" inert></i> {{localize "WEATHERFORGING.Welcome.Report"}}</a>
+  </p>
+
+  <footer class="wf-footer">
+    {{#if isGM}}
+    <button type="button" data-action="openPanel"><i class="fa-solid fa-cloud-sun-rain" inert></i> {{localize "WEATHERFORGING.Welcome.OpenPanel"}}</button>
+    {{/if}}
+    <button type="button" data-action="close"><i class="fa-solid fa-check" inert></i> {{localize "WEATHERFORGING.Welcome.Close"}}</button>
+  </footer>
+  <p class="wf-hint">{{localize "WEATHERFORGING.Welcome.Hint"}}</p>
+</section>

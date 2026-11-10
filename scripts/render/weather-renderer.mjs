@@ -1,6 +1,8 @@
 import { MODULE_ID } from "../constants.mjs";
 import { getSetting, QUALITY_FACTORS } from "../settings.mjs";
 import { WeatherController } from "../state/weather-controller.mjs";
+import { lightningLevel } from "../state/lightning.mjs";
+import { ATMOSPHERE_FRAGMENT, ATMOSPHERE_VERTEX } from "./shaders/atmosphere.mjs";
 
 /**
  * Per precipitation type: how its particles look and move.
@@ -18,6 +20,10 @@ const PARTICLE_TYPES = {
 const SPLASH_MAX = 260;
 const SPLASH_LIFETIME = 0.35;
 
+const smoothstep = (a, b, x) => {
+  const t = Math.min(1, Math.max(0, (x - a) / (b - a)));
+  return t * t * (3 - 2 * t);
+};
 const rand = ([min, max]) => min + Math.random() * (max - min);
 const wrap = (v, min, size) => min + ((((v - min) % size) + size) % size);
 
@@ -27,9 +33,13 @@ const wrap = (v, min, size) => min + ((((v - min) % size) + size) % size);
  * driven by WeatherController.getCurrent() every frame.
  */
 export class WeatherRenderer {
-  /** @param {import("./weather-mask.mjs").WeatherMask} mask  No-weather zones. */
-  constructor(mask) {
+  /**
+   * @param {import("./weather-mask.mjs").WeatherMask} mask  No-weather zones.
+   * @param {import("./scene-lighting.mjs").SceneLighting} lighting  Darkness integration.
+   */
+  constructor(mask, lighting) {
     this.mask = mask;
+    this.lighting = lighting;
   }
 
   /** @type {PIXI.Container|null} */
@@ -37,12 +47,14 @@ export class WeatherRenderer {
   #textures = {};
   #layers = {};
   #splashes = null;
-  #fog = null;
+  #atmosphere = null;
   #gloom = null;
   #flash = null;
-  #flashLevel = 0;
-  #pendingFlash = 0;
   #time = 0;
+  #drift = [0, 0];
+
+  /** Current lightning flash level 0–1, read by the interface theme. */
+  flashLevel = 0;
 
   /**
    * Foundry's weather occlusion filter: hides weather under roofs and inside
@@ -79,7 +91,7 @@ export class WeatherRenderer {
       return s;
     });
     this.container.addChildAt(this.#splashes, 1);
-    this.#fog = this.#createVeil(0xc9ced6);
+    this.#atmosphere = this.#createAtmosphere();
     this.#flash = this.#createVeil(0xf2f6ff);
     this.#flash.blendMode = PIXI.BLEND_MODES.ADD;
 
@@ -92,6 +104,8 @@ export class WeatherRenderer {
 
   detach() {
     canvas.app?.ticker?.remove(this.#tick, this);
+    this.lighting?.reset();
+    this.flashLevel = 0;
     if (this.container && !this.container.destroyed) this.container.destroy({ children: true });
     for (const tex of Object.values(this.#textures)) tex.destroy(true);
     this.container = null;
@@ -141,6 +155,25 @@ export class WeatherRenderer {
       g.beginFill(0x8a8580, 0.6).drawCircle(5, 5, 5).endFill();
       g.beginFill(0x5f5a55, 0.9).drawCircle(5, 5, 2.5).endFill();
     });
+  }
+
+  #createAtmosphere() {
+    const geometry = new PIXI.Geometry()
+      .addAttribute("aVertexPosition", [0, 0, 1, 0, 1, 1, 0, 1], 2)
+      .addIndex([0, 1, 2, 0, 2, 3]);
+    const shader = PIXI.Shader.from(ATMOSPHERE_VERTEX, ATMOSPHERE_FRAGMENT, {
+      uRect: new Float32Array([0, 0, 1, 1]),
+      uGrid: canvas.dimensions.size,
+      uTime: 0,
+      uDrift: new Float32Array([0, 0]),
+      uFog: 0,
+      uShadow: 0,
+      uFogColor: new Float32Array([0.79, 0.81, 0.84])
+    });
+    const mesh = new PIXI.Mesh(geometry, shader);
+    mesh.visible = false;
+    this.container.addChild(mesh);
+    return mesh;
   }
 
   #createVeil(tint) {
@@ -236,25 +269,34 @@ export class WeatherRenderer {
 
     this.#updateSplashes(state.precipitation.rain * quality, view, grid, dt);
 
-    for (const veil of [this.#gloom, this.#fog, this.#flash]) {
+    for (const veil of [this.#gloom, this.#flash]) {
       veil.position.set(view.x, view.y);
       veil.width = view.w;
       veil.height = view.h;
     }
-    this.#gloom.alpha = state.cloudCover * 0.18 + state.lightning * 0.1;
-    this.#fog.alpha = state.fog * 0.6;
+    const darknessLinked = getSetting("affectDarkness");
+    this.#gloom.alpha = (state.cloudCover * 0.18 + state.lightning * 0.1) * (darknessLinked ? 0.5 : 1);
 
-    // Lightning: random strikes, often with a quick second flicker.
-    if (state.lightning > 0 && Math.random() < state.lightning * 0.25 * dt) {
-      this.#flashLevel = 1;
-      if (!reduceMotion && Math.random() < 0.6) this.#pendingFlash = 0.12 + Math.random() * 0.1;
+    // Fog wisps and cloud shadows drift with the (gust-free) wind.
+    this.#drift[0] += windX / gust * dt;
+    this.#drift[1] += windY / gust * dt;
+    const c = state.cloudCover;
+    const shadow = smoothstep(0.1, 0.4, c) * (1 - smoothstep(0.8, 1, c));
+    const atm = this.#atmosphere;
+    atm.visible = state.fog > 0.001 || shadow > 0.001;
+    if (atm.visible) {
+      const u = atm.shader.uniforms;
+      u.uRect = new Float32Array([view.x, view.y, view.w, view.h]);
+      u.uTime = this.#time;
+      u.uDrift = new Float32Array(this.#drift);
+      u.uFog = state.fog;
+      u.uShadow = shadow;
     }
-    if (this.#pendingFlash > 0) {
-      this.#pendingFlash -= dt;
-      if (this.#pendingFlash <= 0) this.#flashLevel = Math.max(this.#flashLevel, 0.8);
-    }
-    this.#flashLevel = Math.max(0, this.#flashLevel - dt * 4);
-    this.#flash.alpha = this.#flashLevel * (reduceMotion ? 0.12 : 0.55);
+
+    // Lightning, identical on every client (derived from the server clock).
+    const flash = lightningLevel(WeatherController.now(), state.lightning, { flicker: !reduceMotion });
+    this.#flash.alpha = flash * (reduceMotion ? 0.12 : 0.55);
     this.flashLevel = this.#flash.alpha;
+    this.lighting?.update(state, flash);
   }
 }

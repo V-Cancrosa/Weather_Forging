@@ -6,7 +6,8 @@
     "Panel": {
       "Title": "Weather Forging",
       "Scene": "Scena",
-      "Duration": "Czas przejścia (sekundy)"
+      "Duration": "Czas przejścia (sekundy)",
+      "Custom": "Edytor pogody i własne presety…"
     },
     "Presets": {
       "clear": "Bezchmurnie",
@@ -45,7 +46,71 @@
       "IndoorMasking": {
         "Name": "Ukryj pogodę we wnętrzach",
         "Hint": "Używa maskowania pogody Foundry, żeby opady i pokrywa terenu nie pojawiały się pod dachami ani w regionach z zachowaniem „Suppress Weather”."
+      },
+      "AffectDarkness": {
+        "Name": "Pogoda wpływa na oświetlenie sceny",
+        "Hint": "Chmury, deszcz i mgła przyciemniają scenę przez oświetlenie Foundry (źródła światła zaczynają mieć znaczenie), a błyskawica na moment ją rozświetla. Działa tylko po stronie klienta, ustawienie ciemności sceny nie jest zmieniane."
+      },
+      "ShowWidget": {
+        "Name": "Pokaż widżet pogody",
+        "Hint": "Mały, przesuwalny wskaźnik aktualnej pogody, temperatury i wiatru."
+      },
+      "TemperatureUnit": {
+        "Name": "Jednostka temperatury"
       }
+    },
+    "Editor": {
+      "Title": "Edytor pogody",
+      "Load": "Zacznij od",
+      "CurrentWeather": "Aktualna pogoda",
+      "Groups": {
+        "precipitation": "Opady",
+        "wind": "Wiatr",
+        "sky": "Niebo i powietrze",
+        "ground": "Pokrywa terenu"
+      },
+      "Apply": "Zastosuj na scenie",
+      "SaveAs": "Zapisz jako preset",
+      "NamePlaceholder": "Nazwa presetu, np. Mżawka na pustkowiach",
+      "Save": "Zapisz",
+      "Delete": "Usuń ten preset",
+      "NameRequired": "Najpierw nadaj presetowi nazwę.",
+      "Saved": "Zapisano preset „{name}”.",
+      "Deleted": "Usunięto preset „{name}”."
+    },
+    "Fields": {
+      "precipitation_rain": "Deszcz",
+      "precipitation_snow": "Śnieg",
+      "precipitation_hail": "Grad",
+      "precipitation_ash": "Popiół",
+      "wind_speed": "Prędkość",
+      "wind_direction": "Kierunek (w stronę)",
+      "wind_gusts": "Porywy",
+      "temperature": "Temperatura",
+      "cloudCover": "Zachmurzenie",
+      "fog": "Mgła",
+      "lightning": "Błyskawice",
+      "ground_snow": "Pokrywa śniegu",
+      "ground_wetness": "Wilgoć"
+    },
+    "Widget": {
+      "Custom": "Własna pogoda",
+      "OpenPanel": "Otwórz panel pogody"
+    },
+    "Welcome": {
+      "Title": "Witaj w Weather Forging",
+      "MenuLabel": "Pokaż okno powitalne",
+      "Tagline": "Kinowa pogoda przy Twoim stole: na mapie, w interfejsie i w mechanice.",
+      "QuickStart": "Szybki start",
+      "Step1": "Otwórz panel: <strong>Sterowanie sceną → Oświetlenie → ikona chmury</strong> albo kliknij widżet pogody.",
+      "Step2": "Wybierz preset i czas przejścia. Ustaw <strong>0 s</strong>, żeby od razu zobaczyć pełny efekt.",
+      "Step3": "Pogoda nie wchodzi do wnętrz: narysuj <strong>Region</strong> i dodaj mu zachowanie <strong>Suppress Weather</strong>.",
+      "Step4": "Stwórz własną pogodę w <strong>Edytorze pogody</strong> i zapisz ją jako preset.",
+      "WhatsNew": "Nowości",
+      "Report": "Zgłoś problem",
+      "OpenPanel": "Otwórz panel pogody",
+      "Close": "Niech pada!",
+      "Hint": "To okno pojawia się po każdej aktualizacji. Możesz je otworzyć ponownie w ustawieniach modułu."
     }
   }
 }

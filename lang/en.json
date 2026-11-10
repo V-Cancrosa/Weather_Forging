@@ -6,7 +6,8 @@
     "Panel": {
       "Title": "Weather Forging",
       "Scene": "Scene",
-      "Duration": "Transition time (seconds)"
+      "Duration": "Transition time (seconds)",
+      "Custom": "Weather editor & custom presets…"
     },
     "Presets": {
       "clear": "Clear",
@@ -45,7 +46,71 @@
       "IndoorMasking": {
         "Name": "Hide weather indoors",
         "Hint": "Use Foundry's weather occlusion so precipitation and ground cover do not appear under roofs or inside regions with the Suppress Weather behavior."
+      },
+      "AffectDarkness": {
+        "Name": "Weather affects scene lighting",
+        "Hint": "Clouds, rain and fog darken the scene through Foundry's lighting (so light sources matter) and lightning briefly lights it up. Client-side only; the scene's own darkness setting is never changed."
+      },
+      "ShowWidget": {
+        "Name": "Show weather widget",
+        "Hint": "A small, draggable readout of the current weather, temperature and wind."
+      },
+      "TemperatureUnit": {
+        "Name": "Temperature unit"
       }
+    },
+    "Editor": {
+      "Title": "Weather Editor",
+      "Load": "Start from",
+      "CurrentWeather": "Current weather",
+      "Groups": {
+        "precipitation": "Precipitation",
+        "wind": "Wind",
+        "sky": "Sky & air",
+        "ground": "Ground cover"
+      },
+      "Apply": "Apply to scene",
+      "SaveAs": "Save as preset",
+      "NamePlaceholder": "Preset name, e.g. Wasteland drizzle",
+      "Save": "Save",
+      "Delete": "Delete this preset",
+      "NameRequired": "Give the preset a name first.",
+      "Saved": "Preset \"{name}\" saved.",
+      "Deleted": "Preset \"{name}\" deleted."
+    },
+    "Fields": {
+      "precipitation_rain": "Rain",
+      "precipitation_snow": "Snow",
+      "precipitation_hail": "Hail",
+      "precipitation_ash": "Ash",
+      "wind_speed": "Speed",
+      "wind_direction": "Direction (blowing toward)",
+      "wind_gusts": "Gusts",
+      "temperature": "Temperature",
+      "cloudCover": "Cloud cover",
+      "fog": "Fog",
+      "lightning": "Lightning",
+      "ground_snow": "Snow cover",
+      "ground_wetness": "Wetness"
+    },
+    "Widget": {
+      "Custom": "Custom weather",
+      "OpenPanel": "Open the weather panel"
+    },
+    "Welcome": {
+      "Title": "Welcome to Weather Forging",
+      "MenuLabel": "Show welcome window",
+      "Tagline": "Cinematic weather for your table: on the map, in the interface and in the rules.",
+      "QuickStart": "Quick start",
+      "Step1": "Open the panel: <strong>Scene Controls → Lighting → cloud icon</strong>, or click the weather widget.",
+      "Step2": "Pick a preset and a transition time. Set <strong>0 s</strong> to see the full effect instantly.",
+      "Step3": "Keep weather out of interiors: draw a <strong>Region</strong> and add the <strong>Suppress Weather</strong> behavior.",
+      "Step4": "Make your own weather in the <strong>Weather editor</strong> and save it as a preset.",
+      "WhatsNew": "What's new",
+      "Report": "Report a problem",
+      "OpenPanel": "Open weather panel",
+      "Close": "Let it snow!",
+      "Hint": "This window appears after each update. Reopen it any time from the module settings."
     }
   }
 }

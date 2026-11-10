@@ -24,8 +24,24 @@ https://github.com/V-Cancrosa/Weather_Forging/releases/latest/download/module.js
   dodaj mu zachowanie **Suppress Weather** („Wyłącz pogodę”). W tym obszarze
   znikną opady, śnieg i wilgoć na ziemi. Wyłączenie zachowania przywraca pogodę.
 - Śnieg i wilgoć pokrywają tło sceny, poziomy i kafelki (także dachy).
+- **Edytor pogody** (przycisk w panelu): każdy parametr na suwaku, zastosowanie
+  na scenie i zapis jako własny preset.
+- **Widżet pogody** widoczny dla wszystkich graczy: można go przeciągnąć,
+  a MG otwiera nim panel jednym kliknięciem.
+- Pogoda przyciemnia scenę przez oświetlenie Foundry, a błyskawice ją rozświetlają
+  (ustawienie świata „Pogoda wpływa na oświetlenie sceny”).
 - Ustawienia klienta: jakość efektów, interfejs reagujący na pogodę,
   ograniczenie błysków.
+
+### Zgłaszanie problemów
+
+W konsoli przeglądarki (F12) wpisz:
+
+```js
+game.modules.get("weather-forging").api.diagnose()
+```
+
+i dołącz wynik do zgłoszenia.
 
 ### Wczesne API (niestabilne)
 

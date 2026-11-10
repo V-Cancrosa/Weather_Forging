@@ -82,3 +82,86 @@
   gap: 0.5rem;
 }
 .weather-forging .wf-duration input { width: 6rem; }
+
+.weather-forging .wf-open-editor { width: 100%; }
+.weather-forging .wf-preset.custom i { color: var(--color-warm-2, #ff6400); }
+
+/* ---- Weather editor ---- */
+.wf-editor-app .wf-editor { display: flex; flex-direction: column; gap: 0.6rem; }
+.wf-editor-app .wf-row { display: flex; align-items: center; gap: 0.5rem; }
+.wf-editor-app .wf-row > span { flex: 0 0 auto; }
+.wf-editor-app .wf-row > select,
+.wf-editor-app .wf-row > input[type=text] { flex: 1; }
+.wf-editor-app .wf-row > input[type=number] { width: 6rem; margin-left: auto; }
+.wf-editor-app .wf-group { margin: 0; padding: 0.4rem 0.6rem 0.6rem; }
+.wf-editor-app .wf-field {
+  display: grid;
+  grid-template-columns: 9.5rem 1fr 4.5rem;
+  align-items: center;
+  gap: 0.5rem;
+}
+.wf-editor-app .wf-field output { text-align: right; font-variant-numeric: tabular-nums; }
+.wf-editor-app .wf-apply { font-weight: bold; }
+
+/* ---- Weather widget ---- */
+#weather-forging-widget {
+  position: fixed;
+  top: 12px;
+  left: 50%;
+  translate: -50% 0;
+  z-index: 70;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.35rem 0.8rem 0.35rem 0.6rem;
+  border-radius: 999px;
+  background: rgb(20 22 28 / 0.72);
+  border: 1px solid rgb(255 255 255 / 0.12);
+  box-shadow: 0 2px 10px rgb(0 0 0 / 0.35);
+  backdrop-filter: blur(6px);
+  color: #eef2f7;
+  font-size: 0.85rem;
+  cursor: grab;
+  user-select: none;
+  touch-action: none;
+}
+#weather-forging-widget[style*="left"] { translate: none; }
+#weather-forging-widget[hidden] { display: none; }
+#weather-forging-widget.clickable:hover { border-color: rgb(255 255 255 / 0.35); }
+#weather-forging-widget .wf-icon { font-size: 1.4rem; width: 1.6rem; text-align: center; }
+#weather-forging-widget .wf-text { display: flex; flex-direction: column; line-height: 1.15; }
+#weather-forging-widget .wf-details { opacity: 0.8; font-size: 0.78rem; white-space: nowrap; }
+#weather-forging-widget .wf-wind { display: inline-block; font-size: 0.7rem; }
+
+/* ---- Welcome window ---- */
+.wf-welcome-app .wf-welcome { display: flex; flex-direction: column; gap: 0.4rem; }
+.wf-welcome-app .wf-hero {
+  text-align: center;
+  padding: 1rem 0.5rem 0.8rem;
+  margin: -0.5rem -0.5rem 0.2rem;
+  border-radius: 6px;
+  color: #f4f7fb;
+  background:
+    radial-gradient(circle at 20% 20%, rgb(255 210 120 / 0.35), transparent 45%),
+    radial-gradient(circle at 80% 30%, rgb(150 190 255 / 0.35), transparent 50%),
+    linear-gradient(160deg, #2b3a55, #1a2233 60%, #2d3f5c);
+}
+.wf-welcome-app .wf-hero h2 { margin: 0.3rem 0 0.2rem; border: none; color: inherit; }
+.wf-welcome-app .wf-hero p { margin: 0; opacity: 0.85; }
+.wf-welcome-app .wf-hero-icons { display: flex; justify-content: center; gap: 0.9rem; font-size: 1.5rem; }
+.wf-welcome-app .wf-hero-icons i:nth-child(1) { color: #ffcf6e; }
+.wf-welcome-app .wf-hero-icons i:nth-child(2) { color: #8fb8ff; }
+.wf-welcome-app .wf-hero-icons i:nth-child(3) { color: #e6f1ff; }
+.wf-welcome-app .wf-hero-icons i:nth-child(4) { color: #d6c3ff; }
+.wf-welcome-app .wf-version { font-size: 0.8rem; opacity: 0.7; font-weight: normal; }
+.wf-welcome-app h3 { margin: 0.5rem 0 0.1rem; }
+.wf-welcome-app .wf-steps,
+.wf-welcome-app .wf-release ul { margin: 0.2rem 0; padding-left: 1.4rem; }
+.wf-welcome-app .wf-steps li,
+.wf-welcome-app .wf-release li { margin: 0.15rem 0; }
+.wf-welcome-app .wf-release { opacity: 0.75; }
+.wf-welcome-app .wf-release.latest { opacity: 1; }
+.wf-welcome-app .wf-links { display: flex; gap: 1rem; justify-content: center; margin: 0.3rem 0; }
+.wf-welcome-app .wf-footer { display: flex; gap: 0.5rem; }
+.wf-welcome-app .wf-footer button { flex: 1; }
+.wf-welcome-app .wf-hint { margin: 0; font-size: 0.75rem; opacity: 0.65; text-align: center; }

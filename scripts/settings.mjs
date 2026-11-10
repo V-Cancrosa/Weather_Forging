@@ -24,6 +24,22 @@ export function registerSettings() {
     requiresReload: true
   });
 
+  game.settings.register(MODULE_ID, "affectDarkness", {
+    name: "WEATHERFORGING.Settings.AffectDarkness.Name",
+    hint: "WEATHERFORGING.Settings.AffectDarkness.Hint",
+    scope: "world",
+    config: true,
+    type: Boolean,
+    default: true
+  });
+
+  game.settings.register(MODULE_ID, "customPresets", {
+    scope: "world",
+    config: false,
+    type: Object,
+    default: {}
+  });
+
   game.settings.register(MODULE_ID, "quality", {
     name: "WEATHERFORGING.Settings.Quality.Name",
     hint: "WEATHERFORGING.Settings.Quality.Hint",
@@ -55,6 +71,38 @@ export function registerSettings() {
     config: true,
     type: Boolean,
     default: false
+  });
+
+  game.settings.register(MODULE_ID, "showWidget", {
+    name: "WEATHERFORGING.Settings.ShowWidget.Name",
+    hint: "WEATHERFORGING.Settings.ShowWidget.Hint",
+    scope: "client",
+    config: true,
+    type: Boolean,
+    default: true
+  });
+
+  game.settings.register(MODULE_ID, "temperatureUnit", {
+    name: "WEATHERFORGING.Settings.TemperatureUnit.Name",
+    scope: "client",
+    config: true,
+    type: String,
+    choices: { C: "°C", F: "°F" },
+    default: "C"
+  });
+
+  game.settings.register(MODULE_ID, "widgetPosition", {
+    scope: "client",
+    config: false,
+    type: Object,
+    default: {}
+  });
+
+  game.settings.register(MODULE_ID, "lastWelcome", {
+    scope: "client",
+    config: false,
+    type: String,
+    default: ""
   });
 }
 

@@ -1,5 +1,6 @@
 import { DEFAULT_TRANSITION, FLAG_KEY, MODULE_ID } from "../constants.mjs";
 import { CORE_WEATHER_MAP, PRESETS } from "./presets.mjs";
+import { getPreset } from "./preset-store.mjs";
 import { createTransition, normalizeState, resolveTransition } from "./weather-state.mjs";
 
 /**
@@ -64,9 +65,10 @@ export class WeatherController {
     let preset = null;
     let state = target;
     if (typeof target === "string") {
-      if (!(target in PRESETS)) throw new Error(`${MODULE_ID} | Unknown weather preset "${target}".`);
+      const found = getPreset(target);
+      if (!found) throw new Error(`${MODULE_ID} | Unknown weather preset "${target}".`);
       preset = target;
-      state = PRESETS[target].state;
+      state = found.state;
     }
 
     const transition = createTransition(this.getCurrent(scene), state, {

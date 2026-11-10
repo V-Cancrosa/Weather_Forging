@@ -116,6 +116,11 @@ gdzie jest jego postać, co dodatkowo buduje immersję. Szczegóły dopracujemy 
   (ośnieżone dachy znikają razem z zanikającym dachem); strefy bez pogody
   z Regionów z zachowaniem „Suppress Weather”: własna maska rastrowa
   (niezależna od filtru okluzji Foundry), używana przez cząsteczki i shader ziemi.
+- **v0.4.0**: okno powitalne z listą zmian, widżet pogody dla graczy, edytor
+  pogody z własnymi presetami (ustawienie świata), mgła w kłębach i cienie chmur
+  (shader atmosfery), przyciemnianie sceny przez hook `configureCanvasEnvironment`
+  (tylko po stronie klienta), błyskawice deterministyczne z zegara serwera
+  (wszyscy widzą ten sam błysk), `api.diagnose()` do zgłoszeń.
 
 ## 6. Otwarte pytania
 

@@ -30,6 +30,17 @@ export class GroundRenderer {
     this.mask = mask;
   }
 
+  /** Counts for diagnostics. */
+  get stats() {
+    const sources = [...this.#twins.keys()];
+    return {
+      background: sources.includes(canvas.primary?.background),
+      tiles: sources.filter(s => canvas.primary?.tiles && [...canvas.primary.tiles.values()].includes(s)).length,
+      total: this.#twins.size,
+      overlay: !!this.#overlay
+    };
+  }
+
   /** @param {PIXI.Filter|null} occlusionFilter  Hides cover under faded roofs. */
   attach(occlusionFilter = null) {
     this.detach();
