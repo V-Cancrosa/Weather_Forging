@@ -1,8 +1,8 @@
 {
   "id": "weather-forging",
   "title": "Weather Forging",
-  "description": "Cinematic, system-agnostic weather for Foundry VTT: canvas effects, weather-reactive interface and a weather state other systems and modules can read.",
-  "version": "0.4.0",
+  "description": "<p><strong>Cinematic, system-agnostic weather for Foundry VTT.</strong> Snow that settles on your maps, rain that soaks the ground, fog that drifts with the wind and thunderstorms that light up the whole scene.</p><ul><li><strong>Living maps</strong>: accumulating snow with drifts, wet ground with puddles and ripples, snowy roofs and tiles.</li><li><strong>Atmosphere</strong>: rain, snow, hail and ash driven by wind, drifting fog, moving cloud shadows.</li><li><strong>Real lighting</strong>: clouds darken the scene through Foundry's lighting, lightning lights it up for every player at once.</li><li><strong>Weather-reactive interface</strong>: frost, cold and storm tints across the whole UI.</li><li><strong>Easy control</strong>: GM panel with smooth transitions, weather editor with custom presets, a widget for players.</li><li><strong>No-weather zones</strong>: Regions with the Suppress Weather behavior, roofs keep interiors dry.</li><li><strong>For developers</strong>: a weather state other systems and modules can read and drive.</li></ul>",
+  "version": "0.4.1",
   "compatibility": {
     "minimum": "14",
     "verified": "14"
@@ -10,6 +10,12 @@
   "authors": [
     {
       "name": "V-Cancrosa"
+    }
+  ],
+  "media": [
+    {
+      "type": "cover",
+      "url": "https://raw.githubusercontent.com/V-Cancrosa/Weather_Forging/main/media/cover.webp"
     }
   ],
   "esmodules": [

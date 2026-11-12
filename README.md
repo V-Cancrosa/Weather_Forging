@@ -1,5 +1,7 @@
 # Weather Forging
 
+![Weather Forging](media/cover.webp)
+
 Kinowa, niezależna od systemu pogoda dla **Foundry VTT v14**: efekty na mapie,
 interfejs reagujący na pogodę i stan pogody dostępny dla innych systemów
 i modułów.

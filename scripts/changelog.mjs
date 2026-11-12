@@ -4,6 +4,11 @@
  */
 export const CHANGELOG = [
   {
+    version: "0.4.1",
+    en: ["New cover image and a fuller module description."],
+    pl: ["Nowa okładka modułu i pełniejszy opis."]
+  },
+  {
     version: "0.4.0",
     en: [
       "Welcome window (this one) and a weather widget for every player.",
